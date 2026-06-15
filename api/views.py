@@ -13,3 +13,11 @@ def getData(request):
     # serializer is itself an object and serializer.data contains dictionary of items, which will later be converted into JSON inside Response class
     serializer = ItemSerializer(items, many = True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def addItem(request):
+    serializer = ItemSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        
+    return Response(serializer.data)
