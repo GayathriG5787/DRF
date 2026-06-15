@@ -4,7 +4,12 @@ from rest_framework.response import Response
 # handles DRF features like request parsing (converting JSON into python objects) and giving response
 from rest_framework.decorators import api_view
 
+from base.models import Item
+from .serializers import ItemSerializer
+
 @api_view(['GET'])
 def getData(request):
-    person = {'name': 'Gayathri', 'age': 21}
-    return Response(person)
+    items = Item.objects.all()
+    # serializer is itself an object and serializer.data contains dictionary of items, which will later be converted into JSON inside Response class
+    serializer = ItemSerializer(items, many = True)
+    return Response(serializer.data)
